@@ -5,15 +5,15 @@ import numpy as np
 
 from main import Action
 
-discount_factor = 1
+discount_factor = .8
 
 
 def get_alpha(index):
-    return max(.1, min(1, 1.0 - math.log10((index + 1) / 25)))
+    return max(.1, min(1, int(1.0 - math.log10((index + 1) / 25))))
 
 
 def get_epsilon(index):
-    return max(.1, min(1, 1.0 - math.log10((index + 1) / 25)))
+    return max(.1, min(1, int(1.0 - math.log10((index + 1) / 25))))
 
 
 def discretize_state(observation, observation_space):
@@ -60,7 +60,4 @@ def run_episode(env, q_table, index):
         q_table = update_q_table(q_table, old_observation, observation, action, reward, index)
         old_observation = observation
         total_reward += reward
-        if total_reward >= 195:
-            print(f"Converged in {index + 1} episodes!")
-            break
-    return q_table
+    return q_table, total_reward
